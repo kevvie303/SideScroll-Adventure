@@ -75,7 +75,7 @@ class Player {
             this.y = height - 170
             this.velocityY = 0;
         }
-        else if (this.y >= platform.y - 60 && abs(this.x - platform.x - 45) <= 55 && this.y <= platform.y) {
+        else if (this.y >= platform.y - 60 && abs((this.x + 30) - platform.x - 50) <= 75 && this.y <= platform.y - 40 && shop === false) {
             this.y = platform.y - 60
             this.velocityY = 0;
         }

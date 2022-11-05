@@ -70,8 +70,9 @@ function keyReleased() {
     }
 }
 function keyPressed() {
-    if (keyCode === 32)
+    if (keyCode === 32) {
     player.jumpUp();
+    }
     if (abs(player.x - shopDoor.x) < 25 && keyCode === 87 && shop === false) {
         shop = true;
         fade = true;
