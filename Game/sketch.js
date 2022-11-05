@@ -4,7 +4,11 @@ let platform;
 let shop = false;
 let shopBg;
 let exitDoorShop;
-
+// 0 is completely transparent.
+let fade = false;
+let fadeBg = 1;
+let fadeBgAmount = 4;
+let blackCanvas;
 let townBg;
 
 let imgRight;
@@ -14,6 +18,7 @@ function preload() {
     imgRight = loadImage("images/player_Right.gif")
     imgLeft = loadImage("images/player_Left.gif")
     townBg = loadImage("images/mainmapke.png")
+    blackCanvas = loadImage("images/black_intro_screen.png")
 }
 function setup() {
     createCanvas(1200, 600);
@@ -36,15 +41,25 @@ function draw() {
     if (keyIsDown(65) || keyIsDown(37)){
         player.moveLeft();
     }
-    if (abs(player.x - shopDoor.x) < 25 && keyIsDown(87) && shop === false) {
-        shop = true;
-    }
-    if (abs(player.x - exitDoorShop.x) < 110 && keyIsDown(87) && shop === true) {
-        shop = false;
-    }
     if (shop === true) {
-        background(shopBg)
+        if (fade === true) {
+        tint(255, fadeBg);
+        background(blackCanvas)
+        fadeBg += fadeBgAmount
+        if (fadeBg >= 255) {
+            fade = false;
+        }
+        }
+        else if (fade === false) {
+            noTint()
+            background(shopBg)
+            tint(255, fadeBg);
+            image(blackCanvas, 0, 0, width * 2, height * 2);
+            fadeBg -= fadeBgAmount
+        }
+
     }
+    noTint()
     player.update();
     player.draw();
 
@@ -57,4 +72,11 @@ function keyReleased() {
 function keyPressed() {
     if (keyCode === 32)
     player.jumpUp();
+    if (abs(player.x - shopDoor.x) < 25 && keyCode === 87 && shop === false) {
+        shop = true;
+        fade = true;
+    }
+    if (abs(player.x - exitDoorShop.x) < 110 && keyCode === 87 && shop === true) {
+        shop = false;
+    }
 }
