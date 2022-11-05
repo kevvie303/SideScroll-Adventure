@@ -12,6 +12,8 @@ class Player {
         this.isNotJumping = true;
         this.imgLeft = imgLeft;
         this.imgRight = imgRight;
+        // 0 is left, 1 is right
+        this.facingDirection = 0
 
     }
     update() {
@@ -57,12 +59,17 @@ class Player {
     draw() {
         if (this.isMovingRight) {
         image(this.imgRight, this.x, this.y)
+        this.facingDirection = 1
         }
         else if (this.isMovingLeft) {
             image(this.imgLeft, this.x, this.y)
+            this.facingDirection = 0
         }
-        else {
+        else if (this.facingDirection === 1) {
             image(this.imgRight, this.x, this.y)
+        }
+        else if (this.facingDirection === 0) {
+            image(this.imgLeft, this.x, this.y)
         }
         if (this.y >= height - 170 && shop === false) {
             this.y = height - 170

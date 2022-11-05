@@ -75,6 +75,7 @@ function keyPressed() {
     if (abs(player.x - shopDoor.x) < 25 && keyCode === 87 && shop === false) {
         shop = true;
         fade = true;
+        fadeBg = 0;
     }
     if (abs(player.x - exitDoorShop.x) < 110 && keyCode === 87 && shop === true) {
         shop = false;
