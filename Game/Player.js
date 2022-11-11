@@ -27,6 +27,9 @@ class Player {
             this.velocityY -= 30
             this.isJumping = false;
         }
+        if (this.x <= 406 || this.x >= 884) {
+            chopping = false;
+        }
         // gravity
         this.velocityY += 1.5;
         // slide
