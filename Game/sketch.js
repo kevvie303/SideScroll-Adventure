@@ -35,6 +35,11 @@ let minecartY = 460;
 let minecartSlideRight = false;
 let minecartSlideLeft = false;
 let minecartSlideValue = 0;
+let miningImg;
+let miningLvlUpImg;
+let miningLvl = 0;
+let miningLvlUp;
+let miningProgress;
 function preload() {
     shopBg = loadImage("images/shop.gif")
     imgRight = loadImage("images/player_Right.gif")
@@ -49,6 +54,8 @@ function preload() {
     woodcutLvlUpImg = loadImage("images/woodcutLvlUp.png")
     mineBg = loadImage("images/mine.png")
     minecartImg = loadImage("images/minecart.png")
+    miningImg = loadImage("images/mining.gif")
+    miningLvlUpImg = loadImage("images/Mining_up.png")
 }
 function setup() {
     createCanvas(1200, 600);
@@ -57,10 +64,11 @@ function setup() {
     exitDoorShop = new Door(x = 90, y = width - 180, w = 140, h = 160)
     platform = new Platform();
     woodcutProgress = new Count(0, 100);
-    miningProgress = new Count(0, 100)
+    miningProgress = new MiningCount(0, 100)
 }
 
 function draw() {
+    console.log(miningProgress.m)
     if (shop === false && town === true) {
         if (fade === true) {
             tint(255, fadeBg);
@@ -171,29 +179,29 @@ function draw() {
             player.x = 1;
         }
         if (mining === true) {
-            image(choppingImg, player.x - 30, player.y - 53)
+            image(miningImg, player.x - 30, player.y - 53)
             let middle = 550;
-            let sVal = miningProgress.s;
-            let Progress = map(sVal, 0, 100, 0, 60);
+            let mVal = miningProgress.m;
+            let Progress = map(mVal, 0, 100, 0, 60);
             
             fill(225, 255, 128);
             textSize(32);
             textFont(font)
-            text('Mining progress : '+ sVal + '%', width / 2 - 100, middle + 15);
+            text('Mining progress : '+ mVal + '%', width / 2 - 100, middle + 15);
             
             rect(player.x, player.y + 60, Progress, 20, 15)
             stroke(128, 179, 80)
             noFill();
             rect(player.x, player.y + 60, 60, 20, 15)
-            if (sVal === 100) {
-                miningProgress.s = 0;
-                woodcutLvl += 1;
-                woodcutLvlUp = true
+            if (mVal === 100) {
+                miningProgress.m = 0;
+                miningLvl += 1;
+                miningLvlUp = true
                 print(woodcutLvlUp)
             }
         }
         if (woodcutLvlUp === true) {
-            image(woodcutLvlUpImg, player.x, woodcutLvlUpY)
+            image(miningLvlUpImg, player.x, woodcutLvlUpY)
             woodcutLvlUpY --
             if (woodcutLvlUpY <= 400) {
                 woodcutLvlUpY = 500
@@ -236,7 +244,9 @@ function keyReleased() {
     }
     if (keyCode === 87 && chopping === true) {
         chopping = false;
-        woodcutProgress.stop();
+    }
+    else if (keyCode === 87 && mining === true) {
+        mining = false;
     }
 }
 function keyPressed() {
@@ -259,7 +269,7 @@ function keyPressed() {
         chopping = true
         woodcutProgress.start();
     }
-    if (player.x >= 406 && player.x <= 884 && mine === true && keyCode === 87 && mining === false) {
+    if (player.x >= 406 && player.x <= 884 && mine === true && keyCode === 87 && mining === false && forest === false) {
         mining = true
         miningProgress.start();
     }
